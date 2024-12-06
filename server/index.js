@@ -4,6 +4,10 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
 
+// Environment variables (hardcoded for this example)
+const MONGO_URI = 'mongodb+srv://recipess:Sambhav@recipe.m78ka.mongodb.net/?retryWrites=true&w=majority&appName=Recipe';
+const PORT = process.env.PORT || 5000;
+
 // Initialize the express app
 const app = express();
 
@@ -14,14 +18,14 @@ app.use(cors({
 }));
 app.use(express.json()); // Parse incoming JSON requests
 
-// Validate environment variables (ensure MONGO_URI is set)
-if (!process.env.MONGO_URI) {
-  console.error('MONGO_URI is not defined in the environment variables.');
+// Validate environment variables
+if (!MONGO_URI) {
+  console.error('MONGO_URI is not defined.');
   process.exit(1); // Exit if MONGO_URI is not set
 }
 
 // Connect to MongoDB
-mongoose.connect(process.env.MONGO_URI)
+mongoose.connect(MONGO_URI)
   .then(() => console.log('Connected to MongoDB')) // Success
   .catch((err) => {
     console.log('Error connecting to MongoDB: ', err); // Error in case of failure
@@ -94,6 +98,5 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message: 'Something went wrong!', error: err.message });
 });
 
-// Set up the server to listen on a port (5000 by default)
-const PORT = process.env.PORT || 5000;
+// Set up the server to listen on a port
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
