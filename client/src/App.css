@@ -1,0 +1,205 @@
+/* Global Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #121212; /* Very dark background for Batman feel */
+  color: #eaeaea; /* Soft light grey for text */
+  font-family: 'Roboto', sans-serif;
+}
+
+/* Main Container */
+.App {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: 100vh;
+  padding: 20px;
+}
+
+/* Header */
+h1 {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #ffffff; /* White for header text */
+  text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.8); /* Dark shadow for more depth */
+  margin-bottom: 40px;
+}
+
+/* Chat Container */
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  width: 100%;
+  height: 100%;
+  background-color: #1c1c1c; /* Darker grey background for chat */
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.9); /* Strong shadow for depth */
+  overflow: hidden;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Chat History */
+.chat-history {
+  flex-grow: 1;
+  overflow-y: auto;
+  margin-bottom: 20px;
+  padding-right: 5px;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Chat Message Styling */
+.chat-message {
+  margin-bottom: 15px;
+  padding: 20px;
+  border-radius: 12px;
+  max-width: 100%;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  font-size: 1.4rem; /* Increased font size for better readability */
+  line-height: 1.6;
+  text-align: left;
+  font-weight: bold; /* Bold text */
+  background-color: #333333; /* Dark grey for background */
+  color: #ffffff; /* White text */
+  transition: background-color 0.3s ease;
+}
+
+/* User Message Styling */
+.chat-message.user {
+  background-color: black; /* Slightly lighter grey for user */
+  color: #ffffff;
+  align-self: flex-end;
+  margin-left: auto;
+  border: 1px solid #888; /* Subtle border for user messages */
+}
+
+/* Bot Message Styling */
+.chat-message.bot {
+  background-color: black; /* Lighter grey for bot */
+  color: #a3d9a5; /* Soft green for bot */
+  align-self: flex-start;
+  padding-left: 12px;
+  border: 1px solid #777; /* Subtle border for bot messages */
+}
+
+/* Hover effect for bot messages */
+.chat-message.bot:hover {
+  background-color: #bcbcbc;
+}
+.chat-message.user:hover {
+  background-color: #bcbcbc;
+}
+/* Chat Input */
+.chat-input {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+  margin-top: 20px;
+  background-color: transparent; /* Set to transparent to remove the background */
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.9); /* You can keep the shadow if needed */
+  position: fixed;
+  bottom: 20px;
+  width: 90%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+}
+
+/* Chat Input Field */
+.chat-input input {
+  width: 85%;
+  padding: 15px;
+  font-size: 1.6rem; /* Increased font size for better typing experience */
+  font-weight: bold; /* Bold font */
+  border-radius: 30px;
+  border: 2px solid #555; /* Slightly lighter border */
+  background-color: #222; /* Dark background for input */
+  color: #f5f5f5; /* Light text for input */
+  outline: none;
+}
+
+/* Chat Input Field Focus */
+.chat-input input:focus {
+  border-color: #888; /* Subtle border color change on focus */
+  background-color: #333; /* Slightly lighter background on focus */
+}
+
+/* Refined Send Button */
+.chat-input button {
+  width: auto;
+  background-color: #444444; /* Dark grey button */
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  border-radius: 1000px;
+  font-size: 2rem; /* Slightly larger for a sleek look */
+  transition: all 0.3s ease;
+  margin-left: 10px;
+}
+
+.chat-input button:hover {
+  background-color: #666666; /* Light grey for hover effect */
+  transform: scale(1.05); /* Slight scale effect on hover */
+}
+
+/* Send Button Symbol Styling */
+.chat-input button:before {
+  font-size: 2.5rem; /* Bigger symbol for better visibility */
+  display: block;
+  text-align: center;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+  .chat-container {
+    width: 95%;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+  }
+
+  .chat-input input {
+    font-size: 1.4rem;
+  }
+
+  .chat-input button {
+    font-size: 2.2rem;
+  }
+}
+
+/* Animations */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Preformatted Text Styling */
+.chat-message pre {
+  white-space: pre-wrap; /* Ensures the text inside <pre> wraps properly */
+  word-wrap: break-word; /* Breaks words if they're too long */
+  overflow-x: auto; /* Adds horizontal scrollbar only when necessary */
+  max-width: 100%; /* Ensures no overflow beyond the container */
+  font-family: 'Courier New', monospace; /* Optional, ensures monospace font */
+  font-size: 1.65rem; /* Increased font size */
+  color: #f5f5f5; /* Light text for preformatted content */
+  background-color: black; /* Dark background for contrast */
+  padding: 10px;
+  border-radius: 8px; /* Optional, rounds the edges */
+}
