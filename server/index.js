@@ -13,7 +13,7 @@ const app = express();
 
 // Middleware for CORS (Cross-Origin Resource Sharing)
 app.use(cors({
-  origin: 'http://localhost:3000', // Only allow requests from the frontend at localhost:3000
+  origin: 'https://ai-powered-recipe-chatbot-2u7m.vercel.app/', // Only allow requests from the frontend at localhost:3000
   methods: ['GET', 'POST'], // Allowed HTTP methods
 }));
 app.use(express.json()); // Parse incoming JSON requests
