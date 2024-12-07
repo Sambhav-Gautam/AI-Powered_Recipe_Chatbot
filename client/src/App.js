@@ -14,8 +14,12 @@ function App() {
     setLoading(true);
     setError(null);
 
+    console.log("Frontend Query: ", query); // Log the query to see if it's being sent properly
+
     try {
-      const response = await axios.get(`https://chatbot-one-lac.vercel.app/api/recipes?query=${query}`);  // Updated API URL
+      const response = await axios.get(`https://chatbot-one-lac.vercel.app/api/recipes?query=${query}`);
+
+      console.log("Response from backend:", response.data); // Log the response from the backend
 
       const recipes = response.data.map(recipe => ({
         title: recipe.title,
@@ -24,12 +28,11 @@ function App() {
         directions: recipe.instructions.slice(0, 3).join(' | ')  // Show only first few instructions
       }));
 
-      const formattedRecipes = recipes.map(r => `
-        Title: ${r.title.trim()}
-        Ingredients: ${r.ingredients.trim()}
-        Details: ${r.details.trim()}
-        Directions: ${r.directions.trim()}
-      `).join('\n\n');
+      const formattedRecipes = recipes.map(r => ` 
+        Title: ${r.title.trim()} 
+        Ingredients: ${r.ingredients.trim()} 
+        Details: ${r.details.trim()} 
+        Directions: ${r.directions.trim()}`).join('\n\n');
 
       setMessages([
         ...messages,
@@ -37,6 +40,7 @@ function App() {
         { text: formattedRecipes, type: 'bot' }
       ]);
     } catch (error) {
+      console.error("Error fetching recipes from backend:", error); // Log the error from the backend
       setError('Error fetching recipes.');
     } finally {
       setLoading(false);
