@@ -1,4 +1,5 @@
-// Import necessary modules
+// server/index.js
+
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -23,7 +24,6 @@ const allowedOrigins = [
 // Configure CORS middleware dynamically
 app.use(cors({
   origin: (origin, callback) => {
-    // Allow requests with no origin (Postman/testing) or valid origins
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);  // Allow access
     } else {
@@ -32,6 +32,7 @@ app.use(cors({
   },
   methods: ['GET', 'POST'],  // Allowed methods
 }));
+
 app.use(express.json());  // Parse incoming JSON requests
 
 // Connect to MongoDB using the hardcoded URI
@@ -56,6 +57,9 @@ const Recipe = mongoose.model('Recipe', recipeSchema);
 app.get('/api/recipes', async (req, res) => {
   try {
     const { query } = req.query;
+
+    console.log("Backend received query: ", query);  // Log received query
+
     const filter = query
       ? {
           $or: [
@@ -66,14 +70,15 @@ app.get('/api/recipes', async (req, res) => {
       : {};
 
     const recipes = await Recipe.find(filter).limit(5);  // Limit to 5 results
+
+    console.log("Found recipes: ", recipes);  // Log found recipes
+
     res.json(recipes);  // Send results
   } catch (error) {
-    console.error('Error fetching recipes Batman:', error);
+    console.error('Error fetching recipes:', error);  // Log error if any
     res.status(500).json({ message: 'Error fetching recipes', error: error.message });
   }
 });
-
-
 
 // Root route for server status
 app.get('/', (req, res) => {
