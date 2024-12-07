@@ -13,10 +13,11 @@ const app = express();
 // Define allowed origins
 const allowedOrigins = [
   'https://ai-powered-recipe-chatbot.vercel.app',
+  'https://ai-powered-recipe-chatbot-frontend.vercel.app',
   'https://ai-powered-recipe-chatbot-git-aca66a-sambhavs-projects-6e3ec3d4.vercel.app',
   'https://ai-powered-recipe-chatbot-frontend-sambhavs-projects-6e3ec3d4.vercel.app',
   'https://ai-powered-recipe-chatbot-2u7m.vercel.app',
-  'https://ai-powered-recipe-chatbot-eiqv.vercel.app/',
+  'https://ai-powered-recipe-chatbot-eiqv.vercel.app',
 ];
 
 // Configure CORS middleware dynamically
