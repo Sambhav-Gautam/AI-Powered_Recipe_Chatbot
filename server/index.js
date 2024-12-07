@@ -13,7 +13,8 @@ const app = express();
 // Define allowed origins
 const allowedOrigins = [
   'https://ai-powered-recipe-chatbot.vercel.app',
-  'http://localhost:3000',
+  'https://ai-powered-recipe-chatbot-git-aca66a-sambhavs-projects-6e3ec3d4.vercel.app',
+  'https://ai-powered-recipe-chatbot-frontend-sambhavs-projects-6e3ec3d4.vercel.app',
   'https://ai-powered-recipe-chatbot-2u7m.vercel.app',
 ];
 
