@@ -68,29 +68,12 @@ app.get('/api/recipes', async (req, res) => {
     const recipes = await Recipe.find(filter).limit(5);  // Limit to 5 results
     res.json(recipes);  // Send results
   } catch (error) {
-    console.error('Error fetching recipes:', error);
+    console.error('Error fetching recipes Batman:', error);
     res.status(500).json({ message: 'Error fetching recipes', error: error.message });
   }
 });
 
-// API route to add a new recipe
-app.post('/api/recipes', async (req, res) => {
-  try {
-    const { title, ingredients, instructions, cuisine, dietary } = req.body;
 
-    // Validate required fields
-    if (!title || !ingredients || !instructions) {
-      return res.status(400).json({ message: 'Title, ingredients, and instructions are required' });
-    }
-
-    const newRecipe = new Recipe({ title, ingredients, instructions, cuisine, dietary });
-    await newRecipe.save();  // Save new recipe to MongoDB
-    res.status(201).json(newRecipe);  // Respond with created recipe
-  } catch (error) {
-    console.error('Error adding recipe:', error);
-    res.status(500).json({ message: 'Error adding recipe', error: error.message });
-  }
-});
 
 // Root route for server status
 app.get('/', (req, res) => {
