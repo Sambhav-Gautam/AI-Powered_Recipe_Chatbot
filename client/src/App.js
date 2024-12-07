@@ -13,7 +13,7 @@ function App() {
     setError(null);
   
     try {
-      const response = await axios.get(`https://ai-powered-recipe-chatbot-eiqv.vercel.app/api/recipes?query=${query}`);
+      const response = await axios.get(`https://ai-powered-recipe-chatbot-frontend.vercel.app/api/recipes?query=${query}`);
       
       // Assuming response.data is an array of recipes, we can format it into a more readable format
       const recipes = response.data.map(recipe => ({
