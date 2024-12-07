@@ -30,8 +30,18 @@ app.use(cors({
       callback(new Error('Not allowed by CORS'));  // Deny access
     }
   },
-  methods: ['GET', 'POST'],  // Allowed methods
+  methods: ['GET', 'POST', 'OPTIONS'],  // Allowed methods
+  allowedHeaders: ['Content-Type', 'Authorization'],  // Allowed headers
+  credentials: true,  // Allow credentials (cookies, headers)
 }));
+
+// Handle preflight (OPTIONS) requests
+app.options('*', (req, res) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.sendStatus(200);  // Respond to preflight request
+});
 
 app.use(express.json());  // Parse incoming JSON requests
 
