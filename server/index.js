@@ -1,5 +1,3 @@
-// server/index.js
-
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -11,41 +9,35 @@ const PORT = 5000;
 // Initialize the express app
 const app = express();
 
-// Define allowed origins
-const allowedOrigins = [
-  'https://ai-powered-recipe-chatbot.vercel.app',
-  'https://ai-powered-recipe-chatbot-frontend.vercel.app',
-  'https://ai-powered-recipe-chatbot-git-aca66a-sambhavs-projects-6e3ec3d4.vercel.app',
-  'https://ai-powered-recipe-chatbot-frontend-sambhavs-projects-6e3ec3d4.vercel.app',
-  'https://ai-powered-recipe-chatbot-2u7m.vercel.app',
-  'https://ai-powered-recipe-chatbot-eiqv.vercel.app',
-];
+// Allowed origin
+const allowedOrigin = 'https://ai-powered-recipe-chatbot.vercel.app';
 
-// Configure CORS middleware dynamically
+// Configure CORS middleware
 app.use(cors({
   origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin)) {
+    if (!origin || origin === allowedOrigin) {
       callback(null, true);  // Allow access
     } else {
       callback(new Error('Not allowed by CORS'));  // Deny access
     }
   },
-  methods: ['GET', 'POST', 'OPTIONS'],  // Allowed methods
-  allowedHeaders: ['Content-Type', 'Authorization'],  // Allowed headers
-  credentials: true,  // Allow credentials (cookies, headers)
+  methods: ['GET', 'POST', 'OPTIONS', 'PUT', 'DELETE'],  // Allow all methods
+  allowedHeaders: ['Content-Type', 'Authorization'],  // Allow all necessary headers
+  credentials: true,  // Allow cookies and headers
 }));
 
-// Handle preflight (OPTIONS) requests
+// Handle preflight (OPTIONS) requests globally
 app.options('*', (req, res) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.header('Access-Control-Allow-Origin', allowedOrigin);
+  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.header('Access-Control-Allow-Credentials', 'true');
   res.sendStatus(200);  // Respond to preflight request
 });
 
 app.use(express.json());  // Parse incoming JSON requests
 
-// Connect to MongoDB using the hardcoded URI
+// Connect to MongoDB
 mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('Connected to MongoDB'))
   .catch((err) => {
