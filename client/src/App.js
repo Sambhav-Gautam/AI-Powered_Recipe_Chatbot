@@ -4,6 +4,9 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './App.css';
 
+// Enable sending cookies with requests
+axios.defaults.withCredentials = true;
+
 function App() {
   const [query, setQuery] = useState('');
   const [messages, setMessages] = useState([]);
