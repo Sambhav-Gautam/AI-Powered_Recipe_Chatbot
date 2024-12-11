@@ -71,4 +71,9 @@ app.get('/api/recipes', async (req, res) => {
   }
 });
 
+// Root route
+app.get('/', (req, res) => {
+  res.send('Welcome to the AI-Powered Recipe Chatbot API');
+});
+
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
