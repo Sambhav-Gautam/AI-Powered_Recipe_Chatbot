@@ -1,6 +1,10 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const cors = require('cors');
-const fs = require('fs');
+
+// Hardcoded MongoDB URI and Port
+const MONGO_URI = 'mongodb+srv://recipess:Sambhav@recipe.m78ka.mongodb.net/?retryWrites=true&w=majority&appName=Recipe';
+const PORT = 5000;
 
 // Initialize the express app
 const app = express();
@@ -33,38 +37,45 @@ app.options('*', (req, res) => {
 
 app.use(express.json());  // Parse incoming JSON requests
 
-// Load recipes from JSON file
-let recipes = [];
-try {
-  const data = fs.readFileSync('processed_recipes_with_tags.json', 'utf8');
-  recipes = JSON.parse(data);
-  console.log('Recipes loaded successfully');
-} catch (error) {
-  console.error('Error loading recipes:', error);
-  process.exit(1);  // Exit if loading fails
-}
+// Connect to MongoDB
+mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log('Connected to MongoDB'))
+  .catch((err) => {
+    console.error('Error connecting to MongoDB:', err);
+    process.exit(1);  // Exit if MongoDB connection fails
+  });
+
+// Define the recipe schema and model
+const recipeSchema = new mongoose.Schema({
+  title: String,
+  ingredients: [String],
+  instructions: String,
+  cuisine: String,
+  dietary: String,
+});
+const Recipe = mongoose.model('Recipe', recipeSchema);
 
 // API route to fetch recipes based on query
-app.get('/api/recipes', (req, res) => {
+app.get('/api/recipes', async (req, res) => {
   try {
     const { query } = req.query;
 
     console.log("Backend received query: ", query);  // Log received query
 
-    const filteredRecipes = query
-      ? recipes.filter(recipe =>
-          recipe.title.toLowerCase().includes(query.toLowerCase()) ||
-          recipe.ingredients.some(ingredient =>
-            ingredient.toLowerCase().includes(query.toLowerCase())
-          )
-        )
-      : recipes;
+    const filter = query
+      ? {
+          $or: [
+            { title: { $regex: query, $options: 'i' } },  // Search by title
+            { ingredients: { $regex: query, $options: 'i' } },  // Search by ingredients
+          ],
+        }
+      : {};
 
-    const limitedRecipes = filteredRecipes.slice(0, 5);  // Limit to 5 results
+    const recipes = await Recipe.find(filter).limit(5);  // Limit to 5 results
 
-    console.log("Found recipes: ", limitedRecipes);  // Log found recipes
+    console.log("Found recipes: ", recipes);  // Log found recipes
 
-    res.json(limitedRecipes);  // Send results
+    res.json(recipes);  // Send results
   } catch (error) {
     console.error('Error fetching recipes:', error);  // Log error if any
     res.status(500).json({ message: 'Error fetching recipes', error: error.message });
@@ -83,5 +94,4 @@ app.use((err, req, res, next) => {
 });
 
 // Start the server
-const PORT = 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
