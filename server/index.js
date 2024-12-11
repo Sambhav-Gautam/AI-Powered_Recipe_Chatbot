@@ -39,11 +39,34 @@ mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
 
 // Define the recipe schema and model
 const recipeSchema = new mongoose.Schema({
+  url: { type: String, default: '' },
   title: { type: String, default: 'No Title' },
+  details: {
+    'Prep Time:': { type: Number, default: 0 },
+    'Cook Time:': { type: Number, default: 0 },
+    'Additional Time:': { type: Number, default: 0 },
+    'Total Time:': { type: Number, default: 0 },
+    'Servings:': { type: String, default: 'N/A' },
+  },
   ingredients: { type: [String], default: [] },
-  instructions: { type: [String], default: [] },
+  directions: { type: [String], default: [] },
+  nutrition_facts: {
+    'Calories': { type: String, default: '0' },
+    'Fat': { type: String, default: '0g' },
+    'Carbs': { type: String, default: '0g' },
+    'Protein': { type: String, default: '0g' },
+  },
+  author_info: {
+    name: { type: String, default: 'N/A' },
+    link: { type: String, default: '' },
+    bio: { type: String, default: 'N/A' },
+  },
+  update_date: { type: String, default: 'N/A' },
+  tags: { type: [String], default: [] },
   cuisine: { type: String, default: 'N/A' },
+  combined_text: { type: String, default: '' },
 });
+
 const Recipe = mongoose.model('Recipe', recipeSchema);
 
 // API route to fetch recipes
@@ -57,6 +80,7 @@ app.get('/api/recipes', async (req, res) => {
           $or: [
             { title: { $regex: query, $options: 'i' } },
             { ingredients: { $regex: query, $options: 'i' } },
+            { combined_text: { $regex: query, $options: 'i' } }
           ],
         }
       : {};
