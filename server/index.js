@@ -46,11 +46,6 @@ const recipeSchema = new mongoose.Schema({
 });
 const Recipe = mongoose.model('Recipe', recipeSchema);
 
-// Root route
-app.get('/', (req, res) => {
-  res.send('Welcome to the AI-Powered Recipe Chatbot API');
-});
-
 // API route to fetch recipes
 app.get('/api/recipes', async (req, res) => {
   try {
@@ -67,19 +62,17 @@ app.get('/api/recipes', async (req, res) => {
       : {};
 
     const recipes = await Recipe.find(filter).limit(5);
-
-    const formattedRecipes = recipes.map(recipe => ({
-      title: recipe.title || 'No Title',
-      ingredients: Array.isArray(recipe.ingredients) ? recipe.ingredients.join(', ') : 'No Ingredients Found',
-      directions: Array.isArray(recipe.instructions) ? recipe.instructions.slice(0, 3).join(' | ') : 'No Instructions Found'
-    }));
-
-    console.log("Formatted recipes:", JSON.stringify(formattedRecipes, null, 2));
-    res.json(formattedRecipes);
+    console.log("Found recipes:", JSON.stringify(recipes, null, 2));
+    res.json(recipes);
   } catch (error) {
     console.error('Error fetching recipes:', error);
     res.status(500).json({ message: 'Error fetching recipes', error: error.message });
   }
+});
+
+// Root route
+app.get('/', (req, res) => {
+  res.send('Welcome to the AI-Powered Recipe Chatbot API');
 });
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
