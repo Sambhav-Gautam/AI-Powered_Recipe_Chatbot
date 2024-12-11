@@ -1,0 +1,5 @@
+node_modules/
+.env
+.DS_Store  # For macOS systems
+.vscode/    # Visual Studio Code settings directory
+.idea/      # JetBrains IDE settings directory
