@@ -85,7 +85,7 @@ app.get('/api/recipes', async (req, res) => {
         }
       : {};
 
-    const recipes = await Recipe.find(filter).limit(5);
+    const recipes = await Recipe.find(filter).limit(1);
     console.log("Found recipes:", JSON.stringify(recipes, null, 2));
     res.json(recipes);
   } catch (error) {
