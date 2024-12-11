@@ -40,7 +40,7 @@ The **AI-Powered Recipe Chatbot** is a smart web application designed to recomme
 - **Authentication**: 
   - JWT for secure login/signup
 - **Hosting/Deployment**: 
-  - Heroku/Netlify for deployment
+  - Vercel for deployment
 
 ---
 
@@ -113,13 +113,12 @@ cd AI-Powered-Recipe-Chatbot
    - Create a `.env` file in the `backend` directory and add necessary keys:
      ```bash
      MONGO_URI=your_mongo_database_uri
-     JWT_SECRET=your_jwt_secret
      ```
 
 4. **Run the backend server**:
    ```bash
    cd backend
-   npm start
+   node index.js
    ```
 
 5. **Run the frontend server**:
@@ -150,13 +149,13 @@ AI-Powered-Recipe-Chatbot/
 │   ├── controllers/        # API controllers for recipe retrieval and user management
 │   ├── models/             # MongoDB models for recipes and users
 │   ├── routes/             # Routes for API endpoints
-│   ├── server.js           # Main server file
+│   ├── index.js           # Main server file
 │   └── .env                # Environment variables
 │
 ├── frontend/               # Frontend code (React)
 │   ├── public/             # Static assets (images, etc.)
 │   ├── src/                # Source code for React components
-│   ├── App.js              # Main React component
+│   ├── src/App.js              # Main React component
 │   └── package.json        # Frontend dependencies
 │
 ├── .gitignore              # Git ignore file
