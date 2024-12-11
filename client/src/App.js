@@ -1,4 +1,3 @@
-
 // client/src/App.js
 import React, { useState } from 'react';
 import axios from 'axios';
@@ -26,11 +25,14 @@ function App() {
       const recipes = response.data.map(recipe => ({
         title: recipe.title || 'No Title',
         ingredients: Array.isArray(recipe.ingredients) ? recipe.ingredients.join(', ') : 'No Ingredients Found',
-        details: `Cuisine: ${recipe.cuisine || 'N/A'} | Dietary: ${recipe.dietary || 'N/A'}`,
-        directions: Array.isArray(recipe.instructions) ? recipe.instructions.slice(0, 3).join(' | ') : 'No Instructions Found'
+        details: `Cuisine: ${recipe.cuisine || 'N/A'} | Author: ${recipe.author_info?.name || 'N/A'} | Servings: ${recipe.details?.['Servings:'] || 'N/A'}`,
+        directions: Array.isArray(recipe.instructions) ? recipe.instructions.slice(0, 3).join(' | ') : 'No Instructions Found',
+        url: recipe.url || 'No URL Found',
+        nutritionFacts: recipe.nutrition_facts ? Object.entries(recipe.nutrition_facts).map(([key, value]) => `${key}: ${value}`).join(' | ') : 'No Nutrition Facts Found',
+        tags: recipe.tags ? recipe.tags.join(', ') : 'No Tags Found',
       }));
 
-      const formattedRecipes = recipes.map(r => `Title: ${r.title.trim()} \nIngredients: ${r.ingredients.trim()} \nDetails: ${r.details.trim()} \nDirections: ${r.directions.trim()}`).join('\n\n');
+      const formattedRecipes = recipes.map(r => `Title: ${r.title.trim()} \nIngredients: ${r.ingredients.trim()} \nDetails: ${r.details.trim()} \nDirections: ${r.directions.trim()} \nURL: ${r.url.trim()} \nNutrition Facts: ${r.nutritionFacts.trim()} \nTags: ${r.tags.trim()}`).join('\n\n');
 
       setMessages([
         ...messages,
