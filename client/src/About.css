@@ -1,0 +1,95 @@
+/* General Styles for the About Page */
+.about-container {
+    background-color: #1c1c1c;
+    color: white;
+    border-radius: 12px;
+    padding: 20px;
+    max-width: 800px;
+    margin: auto;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.9);
+    font-family: Arial, sans-serif;
+    animation: fadeIn 1s ease-in-out;
+  }
+  
+  h1 {
+    text-align: center;
+    font-size: 2.5rem;
+    color: #f0f0f0;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  h2 {
+    color: #f0f0f0;
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+  }
+  
+  .intro {
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+    line-height: 1.6;
+  }
+  
+  ul {
+    list-style-type: square;
+    margin-left: 20px;
+    font-size: 1.2rem;
+  }
+  
+  ul li {
+    margin-bottom: 8px;
+  }
+  
+  .credits {
+    text-align: center;
+    font-size: 1.2rem;
+    margin-top: 30px;
+    color: #aaa;
+  }
+  
+  /* Animation for fade-in */
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Responsive for smaller screens */
+  @media (max-width: 768px) {
+    .about-container {
+      padding: 15px;
+    }
+  
+    h1 {
+      font-size: 2rem;
+    }
+  
+    h2 {
+      font-size: 1.5rem;
+    }
+  
+    .intro {
+      font-size: 1.1rem;
+    }
+  }
+  
+  .back-button {
+    background-color: #1f1f1f;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 20px;
+  }
+  
+  .back-button:hover {
+    background-color: #333;
+  }
+  

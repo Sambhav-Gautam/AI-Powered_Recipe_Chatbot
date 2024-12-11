@@ -113,7 +113,7 @@
 
 /* Refined Send Button */
 .chat-input button {
-  margin-top:auto; /* Aligns the button to the bottom of the input */
+  margin-top: auto; /* Aligns the button to the bottom of the input */
   width: 5%; /* Adjusted width for proper alignment with input */
   background-color: #444444;
   color: grey;
@@ -205,4 +205,53 @@
 .clear-chat button:hover {
   background-color: #666666;
   transform: scale(1.1);
+}
+
+/* Profile Icon and Dropdown */
+.profile-icon {
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+}
+
+.profile-icon:hover {
+  opacity: 0.8;
+}
+
+.dropdown-menu {
+  background-color: #333;
+  color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+  padding: 10px;
+  z-index: 10;
+}
+
+.dropdown-menu button {
+  background: transparent;
+  border: none;
+  color: white;
+  padding: 10px;
+  text-align: left;
+  width: 100%;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.dropdown-menu button:hover {
+  background-color: #444;
+}
+
+.share-chat-button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.share-chat-button:hover {
+  background-color: #45a049;
 }

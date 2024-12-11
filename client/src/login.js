@@ -17,6 +17,11 @@ function Login({ setUser }) {
       });
 
       if (response.status === 200) {
+        // Save login status and user data to localStorage
+        localStorage.setItem("isLoggedIn", true); // Set login status flag
+        localStorage.setItem("user", JSON.stringify(response.data.user)); // Store user data
+
+        // Update the user state in the parent component
         setUser(response.data.user);
       } else {
         setError("Invalid email or password.");
