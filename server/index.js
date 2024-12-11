@@ -1,10 +1,11 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+require('dotenv').config();
 const User = require('./models/userSchema'); // Corrected import path
 
 // Hardcoded MongoDB URI and Port
-const MONGO_URI = 'mongodb+srv://recipess:Sambhav@recipe.m78ka.mongodb.net/?retryWrites=true&w=majority&appName=Recipe';
+const MONGO_URI = process.env.MONGO_URI;
 const PORT = 5000;
 
 // Initialize the express app
