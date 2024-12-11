@@ -26,7 +26,7 @@ function App() {
         title: recipe.title || 'No Title',
         ingredients: Array.isArray(recipe.ingredients) ? recipe.ingredients.join(', ') : 'No Ingredients Found',
         details: `Cuisine: ${recipe.cuisine || 'N/A'} | Author: ${recipe.author_info?.name || 'N/A'} | Servings: ${recipe.details?.['Servings:'] || 'N/A'}`,
-        directions: Array.isArray(recipe.instructions) ? recipe.instructions.slice(0, 3).join(' | ') : 'No Instructions Found',
+        directions: Array.isArray(recipe.directions) ? recipe.directions.slice(0, 3).join(' | ') : 'No Instructions Found',
         url: recipe.url || 'No URL Found',
         nutritionFacts: recipe.nutrition_facts ? Object.entries(recipe.nutrition_facts).map(([key, value]) => `${key}: ${value}`).join(' | ') : 'No Nutrition Facts Found',
         tags: recipe.tags ? recipe.tags.join(', ') : 'No Tags Found',
