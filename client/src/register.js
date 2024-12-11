@@ -11,7 +11,7 @@ function Register({ setUser }) {
     setError("");
 
     try {
-      const response = await axios.post("http://localhost:5000/api/register", {
+      const response = await axios.post("https://chatbot-one-lac.vercel.app/register", {
         email,
         password,
       });
