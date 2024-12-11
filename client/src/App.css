@@ -30,178 +30,102 @@ h1 {
   margin-bottom: 40px;
 }
 
-/* Chat Container */
-.chat-container {
+/* Login and Register Forms */
+.form-container {
+  width: 100%;
+  max-width: 500px;
+  background-color: #1c1c1c;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.9);
+}
+
+form {
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  width: 100%;
-  height: 100%;
-  background-color: #1c1c1c; /* Darker grey background for chat */
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.9); /* Strong shadow for depth */
-  overflow: hidden;
-  animation: fadeIn 0.5s ease-in-out;
+  gap: 20px;
 }
 
-/* Chat History */
-.chat-history {
-  flex-grow: 1;
-  overflow-y: auto;
-  margin-bottom: 20px;
-  padding-right: 5px;
-  animation: fadeIn 0.5s ease-in-out;
-}
-
-/* Chat Message Styling */
-.chat-message {
-  margin-bottom: 15px;
-  padding: 20px;
-  border-radius: 12px;
-  max-width: 100%;
-  word-wrap: break-word;
-  white-space: pre-wrap;
-  overflow-wrap: break-word;
-  font-size: 1.4rem; /* Increased font size for better readability */
-  line-height: 1.6;
-  text-align: left;
-  font-weight: bold; /* Bold text */
-  background-color: #333333; /* Dark grey for background */
-  color: #ffffff; /* White text */
-  transition: background-color 0.3s ease;
-}
-
-/* User Message Styling */
-.chat-message.user {
-  background-color: black; /* Slightly lighter grey for user */
-  color: #ffffff;
-  align-self: flex-end;
-  margin-left: auto;
-  border: 1px solid #888; /* Subtle border for user messages */
-}
-
-/* Bot Message Styling */
-.chat-message.bot {
-  background-color: black; /* Lighter grey for bot */
-  color: #a3d9a5; /* Soft green for bot */
-  align-self: flex-start;
-  padding-left: 12px;
-  border: 1px solid #777; /* Subtle border for bot messages */
-}
-
-/* Hover effect for bot messages */
-.chat-message.bot:hover {
-  background-color: #bcbcbc;
-}
-.chat-message.user:hover {
-  background-color: #bcbcbc;
-}
-
-/* Chat Input */
-.chat-input {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+form input {
   padding: 15px;
-  margin-top: 20px;
-  background-color: transparent;
-  border-radius: 10px;
-  position: fixed;
-  bottom: 20px;
-  width: 80%; /* Reduced width for better compactness */
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 100;
-}
-
-/* Chat Input Field */
-.chat-input input {
-  width: 85%; /* Reduced width for a more compact look */
-  padding: 12px; /* Slightly smaller padding for compactness */
-  font-size: 1.4rem; /* Adjusted font size */
-  font-weight: bold;
-  border-radius: 30px;
+  font-size: 1.4rem;
   border: 2px solid #555;
+  border-radius: 30px;
   background-color: #222;
   color: #f5f5f5;
   outline: none;
-  max-width: 100%; /* Ensures it does not exceed the container width */
 }
 
-/* Chat Input Field Focus */
-.chat-input input:focus {
+form input:focus {
   border-color: #888;
   background-color: #333;
 }
 
-/* Refined Send Button */
-.chat-input button {
-  width: 15%; /* Adjusted width for proper alignment with input */
+form button {
+  padding: 15px;
+  font-size: 1.6rem;
   background-color: #444444;
   color: #ffffff;
   border: none;
+  border-radius: 30px;
   cursor: pointer;
-  border-radius: 1000px;
-  font-size: 2rem;
-  transition: all 0.3s ease;
-  margin-left: 10px;
-  padding: 12px 15px; /* Adjust padding to match input box size */
+  transition: background-color 0.3s ease;
 }
 
-.chat-input button:hover {
+form button:hover {
   background-color: #666666;
-  transform: scale(1.05);
 }
 
-/* Send Button Symbol Styling */
-.chat-input button:before {
-  font-size: 2.5rem; /* Larger symbol for better visibility */
-  display: block;
+/* Error Messages */
+.error-message {
+  color: #FF1744;
+  font-size: 1.2rem;
+  margin-top: 10px;
+}
+.App {
   text-align: center;
 }
 
-/* Media Queries */
-@media (max-width: 768px) {
-  .chat-container {
-    width: 95%;
-  }
-
-  h1 {
-    font-size: 2.5rem;
-  }
-
-  .chat-input input {
-    font-size: 1.4rem;
-  }
-
-  .chat-input button {
-    font-size: 2.2rem;
-  }
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 40px;
+  padding: 20px;
 }
 
-/* Animations */
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.form-section {
+  width: 250px;
 }
 
-/* Preformatted Text Styling */
-.chat-message pre {
-  white-space: pre-wrap; /* Ensures the text inside <pre> wraps properly */
-  word-wrap: break-word; /* Breaks words if they're too long */
-  overflow-x: auto; /* Adds horizontal scrollbar only when necessary */
-  max-width: 100%; /* Ensures no overflow beyond the container */
-  font-family: 'Courier New', monospace; /* Optional, ensures monospace font */
-  font-size: 1.65rem; /* Increased font size */
-  color: #f5f5f5; /* Light text for preformatted content */
-  background-color: black; /* Dark background for contrast */
+form input {
+  width: 100%;
   padding: 10px;
-  border-radius: 8px; /* Optional, rounds the edges */
+  margin: 5px 0;
+}
+
+form button {
+  width: 100%;
+  padding: 10px;
+  background-color: #333;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+form button:hover {
+  background-color: #555;
+}
+
+h1 {
+  font-size: 2em;
+  margin-bottom: 20px;
+}
+
+h2 {
+  font-size: 1.5em;
+}
+
+.error-message {
+  color: #FF1744;
 }

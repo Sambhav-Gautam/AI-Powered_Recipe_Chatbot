@@ -1,7 +1,7 @@
-// server/index.js
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const User = require('./models/userSchema'); // Corrected import path
 
 // Hardcoded MongoDB URI and Port
 const MONGO_URI = 'mongodb+srv://recipess:Sambhav@recipe.m78ka.mongodb.net/?retryWrites=true&w=majority&appName=Recipe';
@@ -11,12 +11,12 @@ const PORT = 5000;
 const app = express();
 
 // Allowed origin
-const allowedOrigin = 'https://ai-powered-recipe-chatbot.vercel.app';
+const allowedOrigins = ['https://ai-powered-recipe-chatbot.vercel.app', 'http://localhost:3000', 'http://localhost:5000'];
 
 // Configure CORS middleware
 app.use(cors({
   origin: (origin, callback) => {
-    if (!origin || origin === allowedOrigin) {
+    if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);  // Allow access
     } else {
       callback(new Error('Not allowed by CORS'));  // Deny access
@@ -100,3 +100,56 @@ app.get('/', (req, res) => {
 });
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+// Import bcrypt for password hashing (optional, but recommended for security)
+const bcrypt = require('bcryptjs');
+
+// API route to register a new user
+app.post('/api/register', async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    // Check if user already exists
+    const userExists = await User.findOne({ email });
+    if (userExists) {
+      return res.status(400).json({ message: 'User already exists' });
+    }
+
+    // Create a new user
+    const user = new User({ email, password });
+
+    // Optionally hash the password (not done here since you don't want JWT or security)
+    // const hashedPassword = await bcrypt.hash(password, 10);
+    // user.password = hashedPassword;
+
+    await user.save();
+    res.status(201).json({ message: 'User registered successfully' });
+  } catch (error) {
+    console.error('Error registering user:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// API route to login a user
+app.post('/api/login', async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    // Find the user by email
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Check if password matches
+    // Here, we're directly comparing the password, but it's recommended to hash and compare in production
+    if (user.password !== password) {
+      return res.status(400).json({ message: 'Incorrect password' });
+    }
+
+    res.status(200).json({ message: 'Login successful', user });
+  } catch (error) {
+    console.error('Error logging in user:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
