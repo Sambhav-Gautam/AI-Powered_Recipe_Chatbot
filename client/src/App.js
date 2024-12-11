@@ -1,10 +1,9 @@
-// client/src/App.js
 
+// client/src/App.js
 import React, { useState } from 'react';
 import axios from 'axios';
 import './App.css';
 
-// Enable sending cookies with requests
 axios.defaults.withCredentials = true;
 
 function App() {
@@ -17,25 +16,21 @@ function App() {
     setLoading(true);
     setError(null);
 
-    console.log("Frontend Query: ", query); // Log the query to see if it's being sent properly
+    console.log("Frontend Query:", query);
 
     try {
       const response = await axios.get(`https://chatbot-one-lac.vercel.app/api/recipes?query=${query}`);
 
-      console.log("Response from backend:", response.data); // Log the response from the backend
+      console.log("Response from backend:", response.data);
 
       const recipes = response.data.map(recipe => ({
-        title: recipe.title,
-        ingredients: recipe.ingredients.join(', '),
-        details: `Cuisine: ${recipe.cuisine} | Dietary: ${recipe.dietary}`,
-        directions: recipe.instructions.slice(0, 3).join(' | ')  // Show only first few instructions
+        title: recipe.title || 'No Title',
+        ingredients: Array.isArray(recipe.ingredients) ? recipe.ingredients.join(', ') : 'No Ingredients Found',
+        details: `Cuisine: ${recipe.cuisine || 'N/A'} | Dietary: ${recipe.dietary || 'N/A'}`,
+        directions: Array.isArray(recipe.instructions) ? recipe.instructions.slice(0, 3).join(' | ') : 'No Instructions Found'
       }));
 
-      const formattedRecipes = recipes.map(r => ` 
-        Title: ${r.title.trim()} 
-        Ingredients: ${r.ingredients.trim()} 
-        Details: ${r.details.trim()} 
-        Directions: ${r.directions.trim()}`).join('\n\n');
+      const formattedRecipes = recipes.map(r => `Title: ${r.title.trim()} \nIngredients: ${r.ingredients.trim()} \nDetails: ${r.details.trim()} \nDirections: ${r.directions.trim()}`).join('\n\n');
 
       setMessages([
         ...messages,
@@ -43,16 +38,14 @@ function App() {
         { text: formattedRecipes, type: 'bot' }
       ]);
     } catch (error) {
-      console.error("Error fetching recipes from backend:", error); // Log the error from the backend
+      console.error("Error fetching recipes from backend:", error);
       setError('Error fetching recipes.');
     } finally {
       setLoading(false);
     }
   };
 
-  const handleMessageChange = (e) => {
-    setQuery(e.target.value);
-  };
+  const handleMessageChange = (e) => setQuery(e.target.value);
 
   const handleSendMessage = () => {
     if (query.trim()) {
@@ -65,7 +58,6 @@ function App() {
   return (
     <div className="App">
       <h1>AI-Powered Recipe Chatbot</h1>
-
       <div className="chat-container">
         <div className="chat-history">
           {messages.length === 0 && !loading && !error && <div>No chat history yet.</div>}
@@ -86,9 +78,7 @@ function App() {
             onChange={handleMessageChange}
             onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
           />
-          <button onClick={handleSendMessage}>
-            🕸️
-          </button>
+          <button onClick={handleSendMessage}>🕸️</button>
         </div>
       </div>
     </div>
