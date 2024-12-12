@@ -255,3 +255,20 @@
 .share-chat-button:hover {
   background-color: #45a049;
 }
+
+.favorite-button {
+  background-color: transparent;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: white; /* Default color */
+  transition: color 0.3s ease;
+}
+
+.favorite-button.active {
+  color: gold; /* Color after clicking */
+}
+
+.favorite-button:hover {
+  color: #ff8c00; /* Hover effect */
+}

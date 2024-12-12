@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { jsPDF } from "jspdf"; // Import jsPDF
+import { jsPDF } from "jspdf"; 
 import './Chat.css';
-import About from './About'; // Import the About component
-import { FaUserCircle } from 'react-icons/fa'; // For profile icon
+import About from './About'; 
+import { FaUserCircle } from 'react-icons/fa'; 
 
 axios.defaults.withCredentials = true;
 
@@ -13,29 +13,25 @@ function Chat({ currentUser }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [dropdownVisible, setDropdownVisible] = useState(false);
-  const [showAbout, setShowAbout] = useState(false); // State to control About component rendering
-  const [confirmDownload, setConfirmDownload] = useState(false); // State to handle PDF confirmation
+  const [showAbout, setShowAbout] = useState(false);
+  const [confirmDownload, setConfirmDownload] = useState(false);
 
-  // Retrieve saved messages from localStorage on component mount
   useEffect(() => {
     const savedMessages = JSON.parse(localStorage.getItem("chatMessages"));
     if (savedMessages) {
       setMessages(savedMessages);
     }
 
-    // Check if the user is logged in (or any session state is set)
     const isLoggedIn = localStorage.getItem("isLoggedIn");
     if (!isLoggedIn) {
-      // Redirect to login or show login screen if the user is not logged in
       console.log("User is not logged in, redirecting to login...");
-      // Implement redirection logic if needed
     }
   }, []);
 
-  // Save messages to localStorage whenever messages change
   useEffect(() => {
     if (messages.length > 0) {
-      localStorage.setItem("chatMessages", JSON.stringify(messages));
+      const messagesToSave = messages.slice(-50);  
+      localStorage.setItem("chatMessages", JSON.stringify(messagesToSave));
     }
   }, [messages]);
 
@@ -79,7 +75,7 @@ function Chat({ currentUser }) {
       setMessages([
         ...messages,
         { text: `You asked for: ${query}`, type: "user" },
-        { text: formattedRecipes, type: "bot" },
+        { text: formattedRecipes, type: "bot", recipes: recipes },  // Add recipes to message
       ]);
     } catch (error) {
       console.error("Error fetching recipes from backend:", error);
@@ -109,83 +105,108 @@ function Chat({ currentUser }) {
   };
 
   const handleLogout = () => {
-    // Clear user session only when logout is pressed
     localStorage.removeItem("isLoggedIn");
     localStorage.removeItem("user");
     clearChat();
     setMessages([]);
-    window.location.reload(); // Reload the page to reset the app
+    window.location.reload();
     console.log("Logged out");
   };
 
   const handleAbout = () => {
-    setShowAbout(true); // Set the state to show About component
+    setShowAbout(true);
   };
 
   const handleBack = () => {
-    setShowAbout(false); // Return to the chat
+    setShowAbout(false);
   };
+
   const exportChatAsPDF = () => {
     if (confirmDownload) {
       const doc = new jsPDF();
       const currentTime = new Date().toLocaleString();
       doc.setFontSize(16);
-      doc.setTextColor(0, 0, 0); // Default color (black)
+      doc.setTextColor(0, 0, 0);
       doc.setFont("helvetica", "bold");
-      doc.text("Chat History", 20, 20); // Title of the document
+      doc.text("Chat History", 20, 20);
       doc.setFontSize(12);
       doc.setFont("helvetica", "normal");
-      doc.text(`Exported on: ${currentTime}`, 20, 30); // Timestamp of export
-  
-      let y = 40; // Starting position for the text
+      doc.text(`Exported on: ${currentTime}`, 20, 30);
+
+      let y = 40;
       messages.forEach((message, index) => {
-        const time = new Date().toLocaleString(); // Get the current time for each message
+        const time = new Date().toLocaleString();
         const formattedMessage = `${time} - ${message.type === "user" ? "You" : "Bot"}: ${message.text}`;
-        
-        // Split the message into smaller lines that fit the page width
-        const lines = doc.splitTextToSize(formattedMessage, 180); // 180 is the width for wrapping text
-  
-        // Set colors and font styles based on the message type
+
+        const lines = doc.splitTextToSize(formattedMessage, 180);
+
         if (message.type === "user") {
-          doc.setTextColor(0, 102, 204); // Blue color for user
-          doc.setFont("helvetica", "bold"); // Bold font for user
+          doc.setTextColor(0, 102, 204);
+          doc.setFont("helvetica", "bold");
         } else {
-          doc.setTextColor(255, 87, 34); // Orange color for bot
-          doc.setFont("helvetica", "italic"); // Italic font for bot
+          doc.setTextColor(255, 87, 34);
+          doc.setFont("helvetica", "italic");
+        }
+
+        if (y + lines.length * 10 > 270) {
+          doc.addPage();
+          y = 20;
         }
   
-        // Check if the text will fit on the current page
-        if (y + lines.length * 10 > 270) { // 270 is the maximum height for the page
-          doc.addPage(); // Add a new page if the text will overflow
-          y = 20; // Reset y position to start at the top of the new page
-        }
   
+        // Add the lines to the page
+
         // Add the lines to the page
         lines.forEach((line, i) => {
           doc.text(line, 20, y + i * 10);
         });
-  
-        y += lines.length * 10; // Update y position for the next message
+
+        y += lines.length * 10;
       });
-  
+
       doc.save("chat_history.pdf");
     } else {
       alert("Are you sure you want to download the chat history as a PDF?");
-      setConfirmDownload(true); // Set the state to confirm download
+      setConfirmDownload(true);
+    }
+  };
+
+  const handleFavoriteRecipe = async (recipe , button) => {
+    try {
+      const storedUser = localStorage.getItem("user");
+      if (!storedUser) {
+        alert("Please log in to add favorites.");
+        return;
+      }
+  
+      const user = JSON.parse(storedUser);
+  
+      const response = await axios.put(
+        "http://localhost:5000/api/users/favorites",
+        { userId: user._id, recipe }
+      );
+  
+      if (response.status === 200) {
+        alert("Recipe added to favorites!");
+        // button.classList.add("active"); 
+      } else {
+        alert("Failed to add the recipe. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error adding recipe to favorites:", error);
+      alert("An error occurred while adding the recipe.");
     }
   };
   
 
   if (showAbout) {
-    return <About handleBack={handleBack} />; // Pass handleBack to About
+    return <About handleBack={handleBack} />;
   }
 
   return (
     <div className="chat-container">
-      {/* Title Section */}
       <div className="chat-title">
         <h2>Recipe Chatbot</h2>
-        {/* Profile Icon and Dropdown */}
         <div className="profile-icon" onClick={toggleDropdown}>
           <FaUserCircle size={30} color="#fff" />
           {dropdownVisible && (
@@ -195,18 +216,24 @@ function Chat({ currentUser }) {
             </div>
           )}
         </div>
-
-        {/* Share Chat Button */}
         <button onClick={exportChatAsPDF} className="share-chat-button">
           Share Chat
         </button>
       </div>
 
-      {/* Chat History */}
       <div className="chat-history">
         {messages.map((message, index) => (
           <div key={index} className={`chat-message ${message.type}`}>
             <pre>{message.text}</pre>
+            {message.recipes && message.recipes.map((recipe, idx) => (
+              <button
+                key={idx}
+                onClick={() => handleFavoriteRecipe(recipe , this)}
+                className="favorite-button"
+              >
+                ★
+              </button>
+            ))}
           </div>
         ))}
         {loading && <div className="chat-message bot">Loading...</div>}
@@ -217,11 +244,8 @@ function Chat({ currentUser }) {
         )}
       </div>
 
-      {/* Chat Input */}
       <div className="chat-input">
-        <button className="clear-chat" onClick={clearChat}>
-          Cls
-        </button>
+        <button className="clear-chat" onClick={clearChat}>Cls</button>
         <input
           type="text"
           placeholder="Ask me anything..."
