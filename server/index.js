@@ -115,7 +115,7 @@ app.get('/api/recipes', async (req, res) => {
 
   try {
     // Call the same logic as in /api/query to process the query
-    const response = await axios.post('http://localhost:5000/api/query', { query });
+    const response = await axios.post('https://chatbot-one-lac.vercel.app/api/query', { query });
     res.json(response.data);  // Forward the result to the client
   } catch (error) {
     console.error('Error fetching recipes:', error);

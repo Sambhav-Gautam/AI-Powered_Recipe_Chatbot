@@ -182,7 +182,7 @@ function Chat({ currentUser }) {
       const user = JSON.parse(storedUser);
   
       const response = await axios.put(
-        "http://localhost:5000/api/users/favorites",
+        "https://chatbot-one-lac.vercel.app/api/users/favorites",
         { userId: user._id, recipe }
       );
   
