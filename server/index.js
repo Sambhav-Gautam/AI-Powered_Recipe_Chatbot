@@ -15,20 +15,23 @@ const app = express();
 
 // Allowed origin
 const allowedOrigins = ['https://ai-powered-recipe-chatbot.vercel.app', 'http://localhost:3000', 'http://localhost:5000'];
-
 // Configure CORS middleware
 app.use(cors({
   origin: (origin, callback) => {
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);  // Allow access
     } else {
+      console.error(`Blocked by CORS: ${origin}`);
       callback(new Error('Not allowed by CORS'));  // Deny access
     }
   },
-  methods: ['GET', 'POST', 'OPTIONS', 'PUT', 'DELETE'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
 }));
+
+// Enable preflight requests for all routes
+app.options('*', cors());
 
 app.use(express.json());  // Parse incoming JSON requests
 
