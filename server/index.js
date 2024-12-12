@@ -108,22 +108,45 @@ function extractIngredients(query) {
 }
 
 // API route for getting recipes based on query
-app.get('/api/recipes', async (req, res) => {
-  const query = req.query;  // Get the query from URL parameter
-  if (!query) {
-    return res.status(400).json({ message: 'Query parameter is required' });
-  }
+// app.get('/api/recipes', async (req, res) => {
+//   const query = req.query;  // Get the query from URL parameter
+//   if (!query) {
+//     return res.status(400).json({ message: 'Query parameter is required' });
+//   }
 
+//   try {
+//     // Call the same logic as in /api/query to process the query
+//     const response = await axios.post('/api/query', { query });
+//     res.json(response.data);  // Forward the result to the client
+//   } catch (error) {
+//     console.error('Error fetching recipes:', error);
+//     res.status(500).json({ message: 'Error processing the query' });
+//   }
+// });
+// API route to fetch recipes
+app.get('/api/recipes', async (req, res) => {
   try {
-    // Call the same logic as in /api/query to process the query
-    const response = await axios.post('/api/query', { query });
-    res.json(response.data);  // Forward the result to the client
+    const { query } = req.query;
+    console.log("Backend received query:", query);
+
+    const filter = query
+      ? {
+          $or: [
+            { title: { $regex: query, $options: 'i' } },
+            { ingredients: { $regex: query, $options: 'i' } },
+            { combined_text: { $regex: query, $options: 'i' } }
+          ],
+        }
+      : {};
+
+    const recipes = await Recipe.find(filter).limit(1);
+    console.log("Found recipes:", JSON.stringify(recipes, null, 2));
+    res.json(recipes);
   } catch (error) {
     console.error('Error fetching recipes:', error);
-    res.status(500).json({ message: 'Error processing the query' });
+    res.status(500).json({ message: 'Error fetching recipes', error: error.message });
   }
 });
-
 // API route to fetch recipes based on query
 app.post('/api/query', async (req, res) => {
   const { query } = req.body;
@@ -243,6 +266,3 @@ app.put('/api/users/favorites', async (req, res) => {
     res.status(500).json({ error: 'Failed to add recipe to favorites' });
   }
 });
-
-
-
