@@ -108,45 +108,76 @@ function extractIngredients(query) {
 }
 
 // API route for getting recipes based on query
-// app.get('/api/recipes', async (req, res) => {
-//   const query = req.query;  // Get the query from URL parameter
-//   if (!query) {
-//     return res.status(400).json({ message: 'Query parameter is required' });
-//   }
-
-//   try {
-//     // Call the same logic as in /api/query to process the query
-//     const response = await axios.post('/api/query', { query });
-//     res.json(response.data);  // Forward the result to the client
-//   } catch (error) {
-//     console.error('Error fetching recipes:', error);
-//     res.status(500).json({ message: 'Error processing the query' });
-//   }
-// });
-// API route to fetch recipes
 app.get('/api/recipes', async (req, res) => {
+  const { query } = req.query;  // Get the query from URL parameter
+  if (!query) {
+    return res.status(400).json({ message: 'Query parameter is required' });
+  }
+
   try {
-    const { query } = req.query;
+    // Log the received query
     console.log("Backend received query:", query);
 
-    const filter = query
-      ? {
-          $or: [
-            { title: { $regex: query, $options: 'i' } },
-            { ingredients: { $regex: query, $options: 'i' } },
-            { combined_text: { $regex: query, $options: 'i' } }
-          ],
-        }
-      : {};
+    // Classify the intent of the user's query (e.g., search by ingredients, title, etc.)
+    const intent = await classifyIntent(query);
+    console.log("Classified intent:", intent);
 
-    const recipes = await Recipe.find(filter).limit(1);
-    console.log("Found recipes:", JSON.stringify(recipes, null, 2));
-    res.json(recipes);
+    // Connect to MongoDB and retrieve all recipes
+    const recipes = await Recipe.find();
+
+    let searchResults;
+
+    // Process query based on intent
+    if (intent === "search_by_ingredients") {
+      const ingredients = extractIngredients(query);
+      console.log("Extracted ingredients:", ingredients);
+      searchResults = recipes.filter(recipe => {
+        return ingredients.every(ingredient => recipe.ingredients.includes(ingredient));
+      });
+    } else if (intent === "search_by_title") {
+      searchResults = recipes.filter(recipe => recipe.title.toLowerCase().includes(query.toLowerCase()));
+    } else if (intent === "search_by_tags") {
+      searchResults = recipes.filter(recipe => recipe.tags.some(tag => tag.toLowerCase().includes(query.toLowerCase())));
+    }
+
+    // Limit the results to 1 recipe per intent (if needed)
+    searchResults = searchResults.slice(0, 1);  // This limits the array to only the first recipe
+
+    // Respond with the search results
+    res.json(searchResults);
   } catch (error) {
     console.error('Error fetching recipes:', error);
-    res.status(500).json({ message: 'Error fetching recipes', error: error.message });
+    res.status(500).json({ message: 'Error processing the query', error: error.message });
   }
 });
+
+
+
+
+// API route to fetch recipes
+// app.get('/api/recipes', async (req, res) => {
+//   try {
+//     const { query } = req.query;
+//     console.log("Backend received query:", query);
+
+//     const filter = query
+//       ? {
+//           $or: [
+//             { title: { $regex: query, $options: 'i' } },
+//             { ingredients: { $regex: query, $options: 'i' } },
+//             { combined_text: { $regex: query, $options: 'i' } }
+//           ],
+//         }
+//       : {};
+
+//     const recipes = await Recipe.find(filter).limit(1);
+//     console.log("Found recipes:", JSON.stringify(recipes, null, 2));
+//     res.json(recipes);
+//   } catch (error) {
+//     console.error('Error fetching recipes:', error);
+//     res.status(500).json({ message: 'Error fetching recipes', error: error.message });
+//   }
+// });
 // API route to fetch recipes based on query
 app.post('/api/query', async (req, res) => {
   const { query } = req.body;
