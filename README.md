@@ -166,7 +166,7 @@ AI-Powered-Recipe-Chatbot/
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/Sambhav-Gautam/AI-Powered_Recipe_Chatbot?tab=MIT-1-ov-file) file for details.
 
 ---
 
