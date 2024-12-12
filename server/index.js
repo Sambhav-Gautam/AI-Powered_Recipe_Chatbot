@@ -30,8 +30,6 @@ app.use(cors({
   credentials: true,
 }));
 
-// Enable preflight requests for all routes
-app.options('*', cors());
 
 app.use(express.json());  // Parse incoming JSON requests
 
@@ -110,15 +108,15 @@ function extractIngredients(query) {
 }
 
 // API route for getting recipes based on query
-app.get('/api/recipes',cors(), async (req, res) => {
-  const query = req.query.query;  // Get the query from URL parameter
+app.get('/api/recipes', async (req, res) => {
+  const query = req.query;  // Get the query from URL parameter
   if (!query) {
     return res.status(400).json({ message: 'Query parameter is required' });
   }
 
   try {
     // Call the same logic as in /api/query to process the query
-    const response = await axios.post('https://chatbot-one-lac.vercel.app/api/query', { query });
+    const response = await axios.post('/api/query', { query });
     res.json(response.data);  // Forward the result to the client
   } catch (error) {
     console.error('Error fetching recipes:', error);
