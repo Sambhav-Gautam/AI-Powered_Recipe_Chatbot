@@ -110,7 +110,7 @@ function extractIngredients(query) {
 }
 
 // API route for getting recipes based on query
-app.get('/api/recipes', async (req, res) => {
+app.get('/api/recipes',cors(), async (req, res) => {
   const query = req.query.query;  // Get the query from URL parameter
   if (!query) {
     return res.status(400).json({ message: 'Query parameter is required' });
