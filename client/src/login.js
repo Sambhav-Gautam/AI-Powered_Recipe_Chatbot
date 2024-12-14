@@ -11,7 +11,7 @@ function Login({ setUser }) {
     setError("");
 
     try {
-      const response = await axios.post("http://localhost:5000/api/login", {
+      const response = await axios.post("https://chatbot-one-lac.vercel.app/api/login", {
         email,
         password,
       });

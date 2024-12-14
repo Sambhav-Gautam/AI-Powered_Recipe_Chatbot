@@ -40,10 +40,10 @@
       setError(null);
 
       try {
-          // const response = await axios.get(`https://chatbot-one-lac.vercel.app/api/recipes?query=${query}`);
-        const response = await axios.get(
-          `http://localhost:5000/api/recipes?query=${query}`
-        );
+        const response = await axios.get(`https://chatbot-one-lac.vercel.app/api/recipes?query=${query}`);
+        // const response = await axios.get(
+        //   `http://localhost:5000/api/recipes?query=${query}`
+        // );
 
         const recipes = response.data.map((recipe) => ({
           title: recipe.title || "No Title",
