@@ -106,6 +106,34 @@ function extractIngredients(query) {
   // Return unique ingredients (no duplicates)
   return [...new Set(cleanedIngredients)];
 }
+const hfApiUrl = "https://api-inference.huggingface.co/models/distilbert-base-uncased";
+
+// Function to Extract Keywords
+async function extractKeywordsHuggingFace(query) {
+    try {
+        const response = await axios.post(
+            hfApiUrl,
+            {
+                inputs: query,
+                options: { wait_for_model: true }
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${process.env.HUGGINGFACE_API_KEY}`
+                }
+            }
+        );
+
+        // Extract keywords from response (adjust this based on actual API output)
+        const keywords = response.data[0].generated_text.split(',').map(word => word.trim().toLowerCase());
+        console.log("Extracted keywords:", keywords);
+        return keywords;
+    } catch (error) {
+        console.error("Error extracting keywords:", error);
+        return [];
+    }
+}
+
 
 // API route for getting recipes based on query
 app.get('/api/recipes', async (req, res) => {
@@ -125,26 +153,28 @@ app.get('/api/recipes', async (req, res) => {
     // Connect to MongoDB and retrieve all recipes
     const recipes = await Recipe.find();
 
-    let searchResults;
+    let searchResults = [];
 
     // Process query based on intent
     if (intent === "search_by_ingredients") {
       const ingredients = extractIngredients(query);
       console.log("Extracted ingredients:", ingredients);
-      searchResults = recipes.filter(recipe => {
-        return ingredients.every(ingredient => recipe.ingredients.includes(ingredient));
-      });
+      searchResults = recipes.filter(recipe => 
+        ingredients.every(ingredient => recipe.ingredients.includes(ingredient))
+      );
     } else if (intent === "search_by_title") {
       searchResults = recipes.filter(recipe => recipe.title.toLowerCase().includes(query.toLowerCase()));
     } else if (intent === "search_by_tags") {
-      searchResults = recipes.filter(recipe => recipe.tags.some(tag => tag.toLowerCase().includes(query.toLowerCase())));
+      searchResults = recipes.filter(recipe => 
+        recipe.tags.some(tag => tag.toLowerCase().includes(query.toLowerCase()))
+      );
     }
 
-    // Limit the results to 1 recipe per intent (if needed)
-    searchResults = searchResults.slice(0, 1);  // This limits the array to only the first recipe
+    // Limit results to 1 recipe if needed
+    searchResults = searchResults.slice(0, 1);  
 
     // Respond with the search results
-    res.json(searchResults);
+    res.json(searchResults.length ? searchResults : { message: "No matching recipes found." });
   } catch (error) {
     console.error('Error fetching recipes:', error);
     res.status(500).json({ message: 'Error processing the query', error: error.message });
@@ -179,6 +209,7 @@ app.get('/api/recipes', async (req, res) => {
 //   }
 // });
 // API route to fetch recipes based on query
+
 app.post('/api/query', async (req, res) => {
   const { query } = req.body;
 
@@ -201,7 +232,14 @@ app.post('/api/query', async (req, res) => {
         return ingredients.every(ingredient => recipe.ingredients.includes(ingredient));
       });
     } else if (intent === "search_by_title") {
-      searchResults = recipes.filter(recipe => recipe.title.toLowerCase().includes(query.toLowerCase()));
+        const keywords = await extractKeywordsHuggingFace(query);
+          if (keywords.length > 0) {
+              searchResults = recipes.filter(recipe => 
+                  keywords.some(keyword => recipe.title.toLowerCase().includes(keyword))
+              );
+          } else {
+              console.log("No keywords found.");
+          }
     } else if (intent === "search_by_tags") {
       searchResults = recipes.filter(recipe => recipe.tags.some(tag => tag.toLowerCase().includes(query.toLowerCase())));
     }
