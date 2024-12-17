@@ -34,11 +34,9 @@ The **AI-Powered Recipe Chatbot** is a smart web application designed to recomme
 - **Database**: 
   - MongoDB (For storing recipes and user data)
 - **NLP Framework**:
-  - Rasa/Dialogflow (For NLP and query handling)
+  - Hugging Face Api (For NLP and query handling)
 - **AI Models**:
   - Custom recipe recommendation models (For ingredient-based recipe retrieval)
-- **Authentication**: 
-  - JWT for secure login/signup
 - **Hosting/Deployment**: 
   - Vercel for deployment
 
@@ -68,7 +66,7 @@ The **AI-Powered Recipe Chatbot** is a smart web application designed to recomme
 - **Web Interface (Frontend & Backend)**: 
   - A responsive and user-friendly web interface that enables users to interact with the chatbot and retrieve recipe suggestions.
 - **NLP-Powered Query Handling**: 
-  - Integration of Rasa/Dialogflow for intelligent query handling and user interaction.
+  - Integration of Hugging Face API for intelligent query handling and user interaction.
 - **Interactive Recipe Chatbot**: 
   - A dynamic chatbot capable of understanding and responding to ingredient/title-based queries with personalized recipe suggestions.
 
