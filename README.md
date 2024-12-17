@@ -84,7 +84,7 @@ Ensure you have the following installed on your machine:
 - **Node.js** (v14 or higher)
 - **MongoDB** (for local development, or use MongoDB Atlas for a cloud database)
 - **React** (for frontend development)
-- **Rasa/Dialogflow** (for NLP framework)
+- **Hugging Face API** (for NLP framework)
 
 ### Installation
 
