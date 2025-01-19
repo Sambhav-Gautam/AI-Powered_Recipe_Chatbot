@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const fs = require('fs');
 require('dotenv').config();
 
-const MONGO_URI = process.env.MONGO_URI || "mongodb+srv://recipess:Sambhav@recipe.m78ka.mongodb.net/recipe";
+const MONGO_URI = process.env.MONGO_URI;
 
 mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log("Connected to MongoDB"))

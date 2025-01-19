@@ -33,7 +33,7 @@ The **AI-Powered Recipe Chatbot** is a smart web application designed to recomme
 - **Database**: 
   - MongoDB (For storing recipes and user data)
 - **NLP Framework**:
-  - Rasa/Dialogflow (For NLP and query handling)
+  - Hugging Face Api (For NLP and query handling)
 - **AI Models**:
   - Custom recipe recommendation models (For ingredient-based recipe retrieval)
 - **Hosting/Deployment**: 
@@ -65,7 +65,7 @@ The **AI-Powered Recipe Chatbot** is a smart web application designed to recomme
 - **Web Interface (Frontend & Backend)**: 
   - A responsive and user-friendly web interface that enables users to interact with the chatbot and retrieve recipe suggestions.
 - **NLP-Powered Query Handling**: 
-  - Integration of Rasa/Dialogflow for intelligent query handling and user interaction.
+  - Integration of Hugging Face API for intelligent query handling and user interaction.
 - **Interactive Recipe Chatbot**: 
   - A dynamic chatbot capable of understanding and responding to ingredient/title-based queries with personalized recipe suggestions.
 
@@ -81,7 +81,7 @@ Ensure you have the following installed on your machine:
 - **Node.js** (v14 or higher)
 - **MongoDB** (for local development, or use MongoDB Atlas for a cloud database)
 - **React** (for frontend development)
-- **Rasa/Dialogflow** (for NLP framework)
+- **Hugging Face API** (for NLP framework)
 
 ### Installation
 
@@ -163,7 +163,7 @@ AI-Powered-Recipe-Chatbot/
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/Sambhav-Gautam/AI-Powered_Recipe_Chatbot?tab=MIT-1-ov-file) file for details.
 
 ---
 

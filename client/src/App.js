@@ -22,7 +22,7 @@ function App() {
   if (!user) {
     return (
       <div className="App">
-        <h1>Welcome to the Batcave 🦇</h1>
+        <h1>Welcome to the RecipeChatbot 🦇</h1>
         <div className="login-container">
           <Login setUser={setUser} />
           <Register setUser={setUser} />
