@@ -1,5 +1,4 @@
 # AI-Powered Recipe Chatbot for Ingredient/Title-Based Retrieval
-*(Under Development - Batman Theme)*
 
 ## Overview
 
