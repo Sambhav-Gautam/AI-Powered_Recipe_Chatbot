@@ -1,5 +1,4 @@
 # AI-Powered Recipe Chatbot for Ingredient/Title-Based Retrieval
-*(Under Development - Batman Theme)*
 
 ## Overview
 
@@ -37,8 +36,6 @@ The **AI-Powered Recipe Chatbot** is a smart web application designed to recomme
   - Rasa/Dialogflow (For NLP and query handling)
 - **AI Models**:
   - Custom recipe recommendation models (For ingredient-based recipe retrieval)
-- **Authentication**: 
-  - JWT for secure login/signup
 - **Hosting/Deployment**: 
   - Vercel for deployment
 
